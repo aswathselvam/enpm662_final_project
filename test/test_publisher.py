@@ -54,6 +54,7 @@ def getKey():
     return key
 
 speed = 10
+speedy = 10
 turn = 10
 
 def vels(speed,turn):
@@ -67,6 +68,7 @@ if __name__=="__main__":
     velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
     x = 0
+    y = 0
     th = 0
     status = 0
     count = 0
@@ -74,6 +76,7 @@ if __name__=="__main__":
     target_speed = 0
     target_turn = 0
     control_speed = 0
+    control_speedy = 0
     control_turn = 0
     rate = rospy.Rate(20) 
     try:
@@ -89,19 +92,18 @@ if __name__=="__main__":
             vel_msg.angular.y = 0
             vel_msg.angular.z = 0
             if key in moveBindings.keys():
-                x = moveBindings[key][0]
-                th = moveBindings[key][1]
                 if(key == 'i' or key == ','):
-                    vel_msg.linear.x = moveBindings[key][0] * 3
+                    x = moveBindings[key][0]
                 elif(key == 'j' or key=='l'):
-                    vel_msg.linear.y = moveBindings[key][1] * 2
+                    y = moveBindings[key][1]
                 elif(key == 'u' or key=='o'):
-                    vel_msg.linear.z = moveBindings[key][1] * 2
+                    th = moveBindings[key][1]
 
                 count = 0
             elif key in speedBindings.keys():
-                speed = speed * speedBindings[key][0]
-                turn = turn * speedBindings[key][1]
+                #speed = speed * speedBindings[key][0]
+                #speedy = speedy * speedBindings[key][0]
+                #turn = turn * speedBindings[key][1]
                 count = 0
 
                 print(vels(speed,turn))
@@ -110,6 +112,7 @@ if __name__=="__main__":
                 status = (status + 1) % 15
             elif key == ' ' or key == 'k' :
                 x = 0
+                y = 0
                 th = 0
                 control_speed = 0
                 control_turn = 0
@@ -117,11 +120,13 @@ if __name__=="__main__":
                 count = count + 1
                 if count > 4:
                     x = 0
+                    y = 0
                     th = 0
                 if (key == '\x03'):
                     break
 
             target_speed = speed * x
+            target_speedy = speedy * y
             target_turn = turn * th
 
             if target_speed > control_speed:
@@ -131,6 +136,13 @@ if __name__=="__main__":
             else:
                 control_speed = target_speed
 
+            if target_speedy > control_speedy:
+                control_speedy = min( target_speedy, control_speedy + 10)
+            elif target_speedy < control_speedy:
+                control_speedy = max( target_speedy, control_speedy - 10 )
+            else:
+                control_speedy = target_speedy
+
             if target_turn > control_turn:
                 control_turn = min( target_turn, control_turn + 10 )
             elif target_turn < control_turn:
@@ -138,8 +150,11 @@ if __name__=="__main__":
             else:
                 control_turn = target_turn
 
+            vel_msg.linear.x = control_speed
+            vel_msg.linear.y = control_speedy
+            vel_msg.angular.z = control_turn
 
-            print("speed: ",control_speed, "turn: ",control_turn)
+            print("speed: ",control_speed, "speed: ",control_speedy, "speed: ",control_turn)
             velocity_publisher.publish(vel_msg)
 
             rate.sleep()
@@ -147,12 +162,3 @@ if __name__=="__main__":
 
     except Exception as e:
         print(e)
-
-    finally:
-        pub_mover.publish(0.2)
-        # twist = Twist()
-        # twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-        # twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
-        # pub.publish(twist)
-
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
