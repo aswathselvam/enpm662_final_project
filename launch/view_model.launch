@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find fuji_mecanum)/launch/load_description.launch" />
+
+  <node name="joint_state_publisher"
+        pkg="joint_state_publisher" type="joint_state_publisher"
+        respawn="false" output="screen" />
+
+  <node name="robot_state_publisher"
+        pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen" />
+
+  <node name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find fuji_mecanum)/rviz/view_model.rviz"
+        respawn="false" output="screen" />
+
+</launch>
