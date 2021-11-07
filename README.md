@@ -1,3 +1,7 @@
+# Robot Arm:
+## Setup Universal Robot Arm
+Clone the [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace.
+
 # fuji_mecanum
 ---
 
