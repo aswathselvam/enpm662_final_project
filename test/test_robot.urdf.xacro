@@ -66,6 +66,16 @@
     <child link="rear_left_wheel_link" />
   </joint>
 
+
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur3_macro.xacro"/>
+  <xacro:ur3_robot prefix="ur3" />
+
+    <joint name="armGlue" type="fixed">
+    <parent link="base_link"/>
+    <child link="ur3base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+  </joint>
+
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/</robotNamespace>
