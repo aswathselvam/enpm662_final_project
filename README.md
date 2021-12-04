@@ -1,8 +1,14 @@
 # Robot Arm:
-## Setup Universal Robot Arm
+
+## Setup
+```
+alias python=python3 
+```
+
+## Universal Robot Arm
 Clone the [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace.
 
-# fuji_mecanum
+# Enpm662 Final Project
 ---
 
 Mecanum Wheel [FM202-205-15U-R/L (FUJI)](http://www.fuji-bearing.com/japanese/products/conveyor/conveyor0408.html)
@@ -21,7 +27,7 @@ How to build fuji mecanum in your robot.
   ....
 
   <!-- include mecanum_wheel macro -->
-  <xacro:include filename="$(find fuji_mecanum)/urdf/mecanum_wheel_macro.xacro" />
+  <xacro:include filename="$(find enpm662_final_project)/urdf/mecanum_wheel_macro.xacro" />
   <!-- load macro -->
   <!-- name: link name -> ${name}_wheel_link -->
   <!-- side: mecanum wheel direct 1: right, -1: left -->
@@ -50,13 +56,18 @@ How to build fuji mecanum in your robot.
   ![mecanum_robot](https://user-images.githubusercontent.com/26181834/129851426-2e3568eb-f340-41ce-9c6a-84ec9c883126.gif)
 
   ```bash
-  # Gazemo GUI launch
-  $ roslaunch fuji_mecanum gazebo_test_robot_launch
+  # Gazebo GUI launch
+  $ roslaunch enpm662_final_project gazebo_test_robot.launch
   ```
 
   ```bash
   # mecanum control node
-  $ rosrun fuji_mecanum test_mecanum_robot.py
+  $ rosrun enpm662_final_project test_mecanum_robot.py
+  ```
+
+  ```bash
+  # Teleop control node
+  $ rosrun enpm662_final_project test_publisher.py
   ```
 
   ```bash

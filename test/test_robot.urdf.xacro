@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="mecanum_wheel_robot" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find fuji_mecanum)/urdf/mecanum_wheel_macro.xacro" />
+  <xacro:include filename="$(find enpm662_final_project)/urdf/mecanum_wheel_macro.xacro" />
 
   <link name="base_link">
     <visual>
@@ -67,13 +67,12 @@
   </joint>
 
 
-  <xacro:include filename="$(find ur_description)/urdf/inc/ur3_macro.xacro"/>
-  <xacro:ur3_robot prefix="ur3" />
 
+  <xacro:include filename="$(find enpm662_final_project)/urdf/arm.urdf"/>
     <joint name="armGlue" type="fixed">
     <parent link="base_link"/>
-    <child link="ur3base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+    <child link="ur5_base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.3"/>
   </joint>
 
   <gazebo>

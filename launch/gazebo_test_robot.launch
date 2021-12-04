@@ -12,18 +12,23 @@
 
   <!-- robot urdf load -->
   <param name="robot_description"
-    command="$(find xacro)/xacro '$(find fuji_mecanum)/test/test_robot.urdf.xacro' --inorder" />
+    command="$(find xacro)/xacro '$(find enpm662_final_project)/test/test_robot.urdf.xacro' --inorder" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <rosparam command="load" file="$(find enpm662_final_project)/config/controller.yaml" />
+  <rosparam command="load" file="$(find enpm662_final_project)/config/ur5_jnt_pos_ctrl.yaml" />
 
   <node name="robot_state_publisher"
         pkg="robot_state_publisher" type="robot_state_publisher"
         respawn="false" output="screen" />
 
-  <!-- Load controller configuration -->
-  <rosparam command="load" file="$(find fuji_mecanum)/config/controller.yaml" />
-
   <!-- Spawn controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner"
         args="joint_state_controller front_right_controller front_left_controller rear_right_controller rear_left_controller" />
+  
+  <node name="controller_spawner_ur5" pkg="controller_manager" type="spawner"
+        ns="/ur5" args="shoulder_pan_joint_position_controller shoulder_lift_joint_position_controller elbow_joint_position_controller wrist_1_joint_position_controller wrist_2_joint_position_controller wrist_3_joint_position_controller joint_state_controller"/>
 
   <!-- Spawn robot in gazebo -->
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"

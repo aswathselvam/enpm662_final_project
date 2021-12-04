@@ -6,6 +6,13 @@ import traceback
 import rospy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64
+import tf_conversions
+import tf2_ros
+import geometry_msgs.msg
+import turtlesim.msg
+
+from gazebo_msgs.srv import GetLinkState 
+from gazebo_msgs.msg import LinkState # For getting information about link states
 
 import numpy as np
 import math
@@ -50,8 +57,6 @@ def process():
 
   global fr_pub, fl_pub, rr_pub, rl_pub
 
-  rospy.init_node('test_mecanum_robot', anonymous=False)
-
   loop_rate = rospy.Rate(10)
 
   fr_pub = rospy.Publisher('/front_right_controller/command', Float64, queue_size=10)
@@ -66,12 +71,34 @@ def process():
     loop_rate.sleep()
 
 
+def handle_chassis_pose(msg):
+    br = tf2_ros.TransformBroadcaster()
+    t = geometry_msgs.msg.TransformStamped()
+
+    t.header.stamp = rospy.Time.now()
+    t.header.frame_id = "map"
+    t.child_frame_id = "base_link"
+    t.transform.translation.x = msg.x
+    t.transform.translation.y = msg.y
+    t.transform.translation.z = 0.0
+    q = tf_conversions.transformations.quaternion_from_euler(0, 0, msg.theta)
+    t.transform.rotation.x = q[0]
+    t.transform.rotation.y = q[1]
+    t.transform.rotation.z = q[2]
+    t.transform.rotation.w = q[3]
+
+    br.sendTransform(t)
+
 
 
 if __name__ == '__main__':
+  rospy.init_node('test_mecanum_robot', anonymous=False)
+  model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
+  chassis_info = model_info("robot::base_link","world")
+  pose =  chassis_info.pose.position.x
+  print(pose)
 
   try:
-
     process()
 
   except Exception as ex:
