@@ -1,12 +1,13 @@
 # Robot Arm:
 
 ## Setup
+If running ROS Noetic, you might have to run:
 ```
 alias python=python3 
 ```
 
 ## Universal Robot Arm
-Clone the [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace.
+Clone the Universial Robotics [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace. Or install 
 
 # Enpm662 Final Project
 ---
