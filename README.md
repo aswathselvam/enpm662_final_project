@@ -1,5 +1,8 @@
 # Robot Arm:
 
+## Documents:
+Link to report, discussions are [here](https://drive.google.com/drive/folders/1Rp32GsWSPNQBrzzu0iJeZsF_Ti1MLDRo?usp=sharing)
+
 ## Setup
 If running ROS Noetic, you might have to run:
 ```
