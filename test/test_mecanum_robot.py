@@ -10,6 +10,7 @@ import tf_conversions
 import tf2_ros
 import geometry_msgs.msg
 import turtlesim.msg
+import tf
 
 from gazebo_msgs.srv import GetLinkState 
 from gazebo_msgs.msg import LinkState # For getting information about link states
@@ -57,12 +58,19 @@ def process():
 
   global fr_pub, fl_pub, rr_pub, rl_pub, model_info, chassis_info
 
-  loop_rate = rospy.Rate(10)
+  loop_rate = rospy.Rate(1)
 
   fr_pub = rospy.Publisher('/front_right_controller/command', Float64, queue_size=10)
   fl_pub = rospy.Publisher('/front_left_controller/command', Float64, queue_size=10)
   rr_pub = rospy.Publisher('/rear_right_controller/command', Float64, queue_size=10)
   rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=10)
+
+  shoulder_angle = rospy.Publisher('/shoulder_angle/command', Float64, queue_size=1)
+  rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=1)
+  rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=1)
+  rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=1)
+  rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=1)
+  rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=1)
 
   mouse_sub = rospy.Subscriber('/cmd_vel', Twist, cmdVelCB, queue_size=10)
 
@@ -72,6 +80,12 @@ def process():
 
   while not rospy.is_shutdown():
     chassis_info = model_info("robot::base_link","world")
+    shoulder_link = model_info("robot::shoulder_link","world")
+    upper_arm_link = model_info("robot::upper_arm_link","world")
+    forearm_link = model_info("robot::forearm_link","world")
+    wrist_1_link = model_info("robot::wrist_1_link","world")
+    wrist_2_link = model_info("robot::wrist_2_link","world")
+    wrist_3_link = model_info("robot::wrist_3_link","world")
 
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
@@ -83,6 +97,19 @@ def process():
     t.transform.rotation.y = chassis_info.link_state.pose.orientation.y
     t.transform.rotation.z = chassis_info.link_state.pose.orientation.z
     t.transform.rotation.w = chassis_info.link_state.pose.orientation.w
+
+    shoulder_link = model_info("robot::shoulder_link","base_link")
+    upper_arm_link = model_info("robot::upper_arm_link","shoulder_link")
+    forearm_link = model_info("robot::forearm_link","upper_arm_link")
+    wrist_1_link = model_info("robot::wrist_1_link","forearm_link")
+    wrist_2_link = model_info("robot::wrist_2_link","wrist_1_link")
+    wrist_3_link = model_info("robot::wrist_3_link","wrist_2_link")
+    
+    orientation_q = upper_arm_link.link_state.pose.orientation
+    orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
+    (roll, pitch, yaw) = tf.transformations.euler_from_quaternion (orientation_list)
+    print("r :",math.degrees(roll),"p: ",math.degrees(pitch),"y: ",math.degrees(yaw))
+    #shoulder_angle.publish(yaw)
 
     br.sendTransform(t)
     loop_rate.sleep()
