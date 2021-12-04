@@ -4,9 +4,11 @@
 Link to report, discussions are [here](https://drive.google.com/drive/folders/1Rp32GsWSPNQBrzzu0iJeZsF_Ti1MLDRo?usp=sharing)
 
 ## Setup
-If running ROS Noetic, you might have to run:
+If running ROS Noetic, you might have to run this command in the terminals you open:
 ```
-alias python=python3 
+mkdir ~/bin
+PATH=~/bin:$PATH
+ln -s /usr/bin/python3 ~/bin/python
 ```
 
 ## Universal Robot Arm
