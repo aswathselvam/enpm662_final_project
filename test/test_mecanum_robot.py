@@ -55,7 +55,7 @@ def cmdVelCB(data):
 
 def process():
 
-  global fr_pub, fl_pub, rr_pub, rl_pub
+  global fr_pub, fl_pub, rr_pub, rl_pub, model_info, chassis_info
 
   loop_rate = rospy.Rate(10)
 
@@ -66,38 +66,33 @@ def process():
 
   mouse_sub = rospy.Subscriber('/cmd_vel', Twist, cmdVelCB, queue_size=10)
 
+
+  br = tf2_ros.TransformBroadcaster()
+  t = geometry_msgs.msg.TransformStamped()
+
   while not rospy.is_shutdown():
-
-    loop_rate.sleep()
-
-
-def handle_chassis_pose(msg):
-    br = tf2_ros.TransformBroadcaster()
-    t = geometry_msgs.msg.TransformStamped()
+    chassis_info = model_info("robot::base_link","world")
 
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = "map"
     t.child_frame_id = "base_link"
-    t.transform.translation.x = msg.x
-    t.transform.translation.y = msg.y
-    t.transform.translation.z = 0.0
-    q = tf_conversions.transformations.quaternion_from_euler(0, 0, msg.theta)
-    t.transform.rotation.x = q[0]
-    t.transform.rotation.y = q[1]
-    t.transform.rotation.z = q[2]
-    t.transform.rotation.w = q[3]
+    t.transform.translation.x = chassis_info.link_state.pose.position.x
+    t.transform.translation.y = chassis_info.link_state.pose.position.y
+    t.transform.translation.z = chassis_info.link_state.pose.position.z
+    t.transform.rotation.x = chassis_info.link_state.pose.orientation.x
+    t.transform.rotation.y = chassis_info.link_state.pose.orientation.y
+    t.transform.rotation.z = chassis_info.link_state.pose.orientation.z
+    t.transform.rotation.w = chassis_info.link_state.pose.orientation.w
 
     br.sendTransform(t)
+    loop_rate.sleep()
+
 
 
 
 if __name__ == '__main__':
   rospy.init_node('test_mecanum_robot', anonymous=False)
-  model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
-  print(model_info)
-  chassis_info = model_info("robot::base_link","world")
-  print(str(chassis_info.link_state.pose.position.x))
-
+  model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)  
 
   try:
     process()
