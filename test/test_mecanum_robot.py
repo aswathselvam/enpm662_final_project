@@ -93,10 +93,6 @@ def handle_chassis_pose(msg):
 
 if __name__ == '__main__':
   rospy.init_node('test_mecanum_robot', anonymous=False)
-  model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
-  chassis_info = model_info("robot::base_link","world")
-  pose =  chassis_info.pose.position.x
-  print(pose)
 
   try:
     process()

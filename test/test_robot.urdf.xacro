@@ -67,12 +67,11 @@
   </joint>
 
 
-
   <xacro:include filename="$(find enpm662_final_project)/urdf/arm.urdf"/>
     <joint name="armGlue" type="fixed">
     <parent link="base_link"/>
     <child link="ur5_base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0.3"/>
+    <origin rpy="0 0 0" xyz="0 0 0.2"/>
   </joint>
 
   <gazebo>

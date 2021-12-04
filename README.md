@@ -12,7 +12,7 @@ ln -s /usr/bin/python3 ~/bin/python
 ```
 
 ## Universal Robot Arm
-Clone the Universial Robotics [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace. Or install 
+Clone the Universial Robotics [repoitory](https://github.com/ros-industrial/universal_robot) to your workspace. 
 
 # Enpm662 Final Project
 ---
@@ -74,17 +74,6 @@ How to build fuji mecanum in your robot.
   ```bash
   # Teleop control node
   $ rosrun enpm662_final_project test_publisher.py
-  ```
-
-  ```bash
-  $ rostopic pub /cmd_vel geometry_msgs/Twist "linear:
-    x: 1.0
-    y: 0.0
-    z: 0.0
-  angular:
-    x: 0.0
-    y: 0.0
-    z: 0.0" 
   ```
 
 ## Data visualization with Rqt:
