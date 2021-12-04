@@ -87,7 +87,7 @@ How to build fuji mecanum in your robot.
     z: 0.0" 
   ```
 
-## Data visualization with Rqt
-Ex: To plot wrist 1 joint setpoint and angle data, in Rviz, open plot and choose:
-/wrist_1_joint_position_controller/command/data
-/wrist_1_joint_position_controller/state/process_value
+## Data visualization with Rqt:
+```
+roslaunch enpm662_final_project rqt_vis.launch  
+```
