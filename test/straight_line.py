@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
+from numpy.core.records import array
 from numpy.lib.financial import rate
+from sympy.solvers.diophantine.diophantine import length
 import rospy
 from std_msgs.msg import Float64
 from sympy import *
@@ -50,10 +52,24 @@ def callback6(data):
     global Q6
     Q6=data.process_value
     return
-    
+
+
+model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)  
+def getGoals():
+    global model_info, Goals
+    Goals = []
+
+    Goal_names= ["coke_can::link", "beer::link", "wood_cube_10cm::link"]
+    for i in Goal_names:
+        obj = model_info(i,"world")
+        x = obj.link_state.pose.position.x
+        y = obj.link_state.pose.position.y
+        z = obj.link_state.pose.position.z
+        Goals.append([x, y, z])
+    Goals = np.array(Goals)
+
 
 t1, t2, t3, t4, t5, t6 = symbols('t1 t2 t3 t4 t5 t6')
-
 
 
 l = 0.575 
@@ -142,9 +158,8 @@ def J_inv(q):
     return Jp
 
 
-
 def controlArm():
-    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi, s
+    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi, s, Goals, model_info
 
     # shoulder, upperarm, forearm, wrist 1, wrsit 2, wrist 3
     # q = Matrix([ [rads(-90)], [rads(-90 + -91/1.571)], [rads(0)], [rads(0)], [rads(0)], [rads(0)]])
@@ -152,19 +167,37 @@ def controlArm():
     Q = Matrix([[Q1], [Q2], [Q3], [Q4], [Q5], [Q6]])
 
     V = Matrix([ [-6], [10], [6] ])  
-  
-    G1 = np.array([3,1])
     
     
 
     loop_rate = rospy.Rate(10)
-        
+
+    Kp = 1
+    current_goal = 0
     while not rospy.is_shutdown():
+        endeff = model_info("robot::wrist_3_link", "world")
+        endeffx = endeff.link_state.pose.position.x
+        endeffy = endeff.link_state.pose.position.y
+        endeffz = endeff.link_state.pose.position.z
+        
+        Xerr = Kp*(Goals[current_goal][0] - endeffx)
+        Yerr = Kp*(Goals[current_goal][1] - endeffy)
+        Zerr = Kp*(Goals[current_goal][2] - endeffz)
+        print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.07:
+            #Go to next goal
+            current_goal+=1
+        if(current_goal>len(Goals)-1):
+            #End program
+            break
+
         # Lock Q2 = rads(-90 + 35/1.571)
+        V = Matrix([ [Xerr], [Yerr], [Zerr*10] ])  
+
         Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
         
-        VWheel = Matrix([ [V[0]/10], [V[1]/10], [0]])
+        VWheel = Matrix([ [Xerr], [Yerr], [0]])
         wheel_vel = (np.dot(H, VWheel).A1).tolist()
         wheel_vel = np.array(wheel_vel)
 
@@ -214,6 +247,8 @@ def controlArm():
 
 if __name__=="__main__":
     rospy.init_node("arm_ik")
+    getGoals()
+
     rospy.Subscriber("/shoulder_pan_joint_position_controller/state/", JointControllerState, callback1, queue_size=5)
     rospy.Subscriber("/shoulder_lift_joint_position_controller/state", JointControllerState, callback2)
     rospy.Subscriber("/elbow_joint_position_controller/state", JointControllerState, callback3)
