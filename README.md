@@ -23,30 +23,32 @@ Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 
   ```bash
   # Gazebo GUI launch
-  $ roslaunch enpm662_final_project gazebo_test_robot.launch
+  roslaunch enpm662_final_project gazebo_test_robot.launch
   ```
 - For Teleop run these 2 nodes:
   ```bash
   # mecanum control node
-  $ rosrun enpm662_final_project test_mecanum_robot.py
+  rosrun enpm662_final_project test_mecanum_robot.py
   ```
 
   ```bash
   # Teleop control node
-  $ rosrun enpm662_final_project test_publisher.py
+  rosrun enpm662_final_project test_publisher.py
   ```
 
 - Navigate the end-effector to Goal positions using this node
   ```bash
   # Run Go to Goals node
-  $ rosrun enpm662_final_project go_to_goals.py
+  rosrun enpm662_final_project go_to_goals.py
   ```
 
-## Data visualization with Rqt:
+## Data visualization:
+Plot joint angles with RQT:
 ```
 roslaunch enpm662_final_project rqt_vis.launch  
 ```
 
+Visualize in Rviz:
 ```
 # Rviz visualization:
 roslaunch enpm662_final_project rviz.launch

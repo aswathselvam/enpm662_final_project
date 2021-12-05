@@ -59,12 +59,13 @@ def getGoals():
     global model_info, Goals
     Goals = []
 
+    # Reach 3 object with the arm
     Goal_names= ["coke_can::link", "beer::link", "wood_cube_10cm::link"]
     for i in Goal_names:
         obj = model_info(i,"world")
         x = obj.link_state.pose.position.x
         y = obj.link_state.pose.position.y
-        z = obj.link_state.pose.position.z
+        z = obj.link_state.pose.position.z + 0.1
         Goals.append([x, y, z])
     Goals = np.array(Goals)
 
@@ -183,10 +184,11 @@ def controlArm():
         Xerr = Kp*(Goals[current_goal][0] - endeffx)
         Yerr = Kp*(Goals[current_goal][1] - endeffy)
         Zerr = Kp*(Goals[current_goal][2] - endeffz)
-        print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.07:
+        #print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.4:
             #Go to next goal
             current_goal+=1
+            print("Going to GOAL: ", current_goal+1)
         if(current_goal>len(Goals)-1):
             #End program
             break
@@ -222,7 +224,7 @@ def controlArm():
         else:
             continue
 
-        print(q_)
+        #print(q_)
         pub_shoulder.publish(q[0]) 
         pub_upperarm.publish(rads(-90 + 35/1.571)) 
         pub_elbow.publish(q[2]) 
