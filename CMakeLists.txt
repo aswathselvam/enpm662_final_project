@@ -162,6 +162,7 @@ include_directories(
  catkin_install_python(PROGRAMS
    test/test_publisher.py
    src/publish_baselinkTF.py
+   src/go_to_goals.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

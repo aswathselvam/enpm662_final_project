@@ -46,3 +46,8 @@ Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 ```
 roslaunch enpm662_final_project rqt_vis.launch  
 ```
+
+```
+# Rviz visualization:
+roslaunch enpm662_final_project rviz.launch
+```

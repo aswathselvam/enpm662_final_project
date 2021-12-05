@@ -55,7 +55,7 @@ def cmdVelCB(data):
 
 def process():
 
-  global fr_pub, fl_pub, rr_pub, rl_pub, model_info, chassis_info
+  global fr_pub, fl_pub, rr_pub, rl_pub
 
   loop_rate = rospy.Rate(10)
 
