@@ -7,6 +7,7 @@ from sympy import *
 import math
 from control_msgs.msg import JointControllerState
 import time 
+import numpy as np
 
 from gazebo_msgs.srv import GetLinkState 
 
@@ -108,7 +109,6 @@ Je = Matrix([[J11, J21, J31],
 print(shape(Je))
 '''
 
-q = Matrix([ [rads(90.001)], [rads(-90 + -80/1.571)], [rads(0.001)], [rads(0.1)], [rads(0.1)], [rads(0.1)]])
 
 '''
 inp = Matrix([u1, u2, u3, u4])
@@ -138,23 +138,37 @@ def J_inv(q):
 
 
 def controlArm():
-    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi
+    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi, s
 
     # shoulder, upperarm, forearm, wrist 1, wrsit 2, wrist 3
     # q = Matrix([ [rads(-90)], [rads(-90 + -91/1.571)], [rads(0)], [rads(0)], [rads(0)], [rads(0)]])
 
     Q = Matrix([[Q1], [Q2], [Q3], [Q4], [Q5], [Q6]])
-    V = Matrix([ [0.0], [0], [0.1] ])    
+    V = Matrix([ [6], [100], [6] ])    
 
-    loop_rate = rospy.Rate(50)
+    loop_rate = rospy.Rate(10)
         
     while not rospy.is_shutdown():
         # Lock Q2 = rads(-90 + 35/1.571)
-        Q = Matrix([[Q1], [rads(-90 + 35/1.571)], [Q3], [Q4], [Q5], [Q6]])
+        Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
+        
+
         if(q_==-1):
             q=Q
-        q=Q+q_
+        elif(len(Q)==len(q_)):
+            i=0
+            while i<len(q_):
+                if q_[i]>pi/10:
+                    q_[i]=pi/10
+                elif q_[i]<-pi/10:
+                    q_[i]=-pi/10
+                i+=1
+
+            q=Q+q_
+        else:
+            continue
+
         print(q_)
         pub_shoulder.publish(q[0]) 
         pub_upperarm.publish(rads(-90 + 35/1.571)) 
@@ -181,6 +195,19 @@ if __name__=="__main__":
     pub_wrist1 = rospy.Publisher('/wrist_1_joint_position_controller/command', Float64, queue_size=5) 
     pub_wrist2 = rospy.Publisher('/wrist_2_joint_position_controller/command', Float64, queue_size=5) 
     pub_wrist3 = rospy.Publisher('/wrist_3_joint_position_controller/command', Float64, queue_size=5) 
+
+    i=0
+    q = Matrix([ [rads(45.001)], [rads(-90 + -80/1.571)], [rads(0.001)], [rads(0.1)], [rads(0.1)], [rads(0.1)]])
+    prate = rospy.Rate(10)
+    while i<1e1:
+        pub_shoulder.publish(q[0]) 
+        pub_upperarm.publish(rads(-90 + 35/1.571)) 
+        pub_elbow.publish(q[2]) 
+        pub_wrist1.publish(q[3])  
+        pub_wrist2.publish(q[4]) 
+        pub_wrist3.publish(q[5]) 
+        i+=1
+        prate.sleep()
 
     controlArm()
 
