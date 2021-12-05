@@ -27,7 +27,7 @@ def callback1(data):
     
 def callback2(data):
     global Q2
-    Q2=(data.process_value + pi/2)*pi/2
+    Q2=data.process_value
     return
     
 def callback3(data):
@@ -54,22 +54,6 @@ def callback6(data):
 t1, t2, t3, t4, t5, t6 = symbols('t1 t2 t3 t4 t5 t6')
 
 
-def inverse(J,q):
-    Js = J.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
-    try:
-        Jp = ((Js.T*Js)).inv()*Js.T
-    except:
-        return -1
-    return Jp
-
-def J_inv(q):
-    global Jeinv
-    Js = Jeinv.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
-    try:
-        Jp = ((Js.T*Js)).inv()*Js.T
-    except:
-        return -1
-    return Jp
 
 l = 0.575 
 w = 0.275
@@ -125,7 +109,6 @@ print(shape(Je))
 '''
 
 q = Matrix([ [rads(90.001)], [rads(-90 + -80/1.571)], [rads(0.001)], [rads(0.1)], [rads(0.1)], [rads(0.1)]])
-Jeinv = inverse(Je,q)
 
 '''
 inp = Matrix([u1, u2, u3, u4])
@@ -134,23 +117,47 @@ Ve = Je*inp
 '''
 
 
+
+def inverse(J,q):
+    Js = J.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
+    try:
+        Jp = ((Js.T*Js)).inv()*Js.T
+    except:
+        return -1
+    return Jp
+
+def J_inv(q):
+    global Je
+    Js = Je.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
+    try:
+        Jp = ((Js.T*Js)).inv()*Js.T
+    except:
+        return -1
+    return Jp
+
+
+
 def controlArm():
-    global q, Q1, Q2, Q3, Q4, Q5, Q6
+    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi
 
     # shoulder, upperarm, forearm, wrist 1, wrsit 2, wrist 3
-    #q = Matrix([ [rads(90)], [rads(-90 + -91/1.571)], [rads(0)], [rads(0)], [rads(0)], [rads(0)]])
+    # q = Matrix([ [rads(-90)], [rads(-90 + -91/1.571)], [rads(0)], [rads(0)], [rads(0)], [rads(0)]])
+
     Q = Matrix([[Q1], [Q2], [Q3], [Q4], [Q5], [Q6]])
+    V = Matrix([ [0.0], [0], [0.1] ])    
 
-    V = Matrix([ [1e+19], [1e+15], [1e+15] ])    
-
-    loop_rate = rospy.Rate(100)
-
+    loop_rate = rospy.Rate(50)
+        
     while not rospy.is_shutdown():
-        q_=J_inv(Q).T*V
-        print(q_)
+        # Lock Q2 = rads(-90 + 35/1.571)
+        Q = Matrix([[Q1], [rads(-90 + 35/1.571)], [Q3], [Q4], [Q5], [Q6]])
+        q_=J_inv(Q)*V
+        if(q_==-1):
+            q=Q
         q=Q+q_
+        print(q_)
         pub_shoulder.publish(q[0]) 
-        pub_upperarm.publish(-pi/2 + q[1]*2/pi) 
+        pub_upperarm.publish(rads(-90 + 35/1.571)) 
         pub_elbow.publish(q[2]) 
         pub_wrist1.publish(q[3])  
         pub_wrist2.publish(q[4]) 
