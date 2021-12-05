@@ -58,6 +58,12 @@ t1, t2, t3, t4, t5, t6 = symbols('t1 t2 t3 t4 t5 t6')
 
 l = 0.575 
 w = 0.275
+
+H = np.matrix([[ 1, 1,  (w + l)],
+                              [ 1, -1, -(w + l)],
+                              [ 1, -1,  (w + l)],
+                              [ 1,  1, -(w + l)]])
+
 Hpi = Matrix([[-1/(4*(l + w)), 1/(4*(l + w)), 1/(4*(l + w)), -1/(4*(l + w))],
 [1/4, 1/4, 1/4, 1/4],
 [-1/4, 1/4, -1/4, 1/4],
@@ -144,7 +150,12 @@ def controlArm():
     # q = Matrix([ [rads(-90)], [rads(-90 + -91/1.571)], [rads(0)], [rads(0)], [rads(0)], [rads(0)]])
 
     Q = Matrix([[Q1], [Q2], [Q3], [Q4], [Q5], [Q6]])
-    V = Matrix([ [6], [100], [6] ])    
+
+    V = Matrix([ [-6], [10], [6] ])  
+  
+    G1 = np.array([3,1])
+    
+    
 
     loop_rate = rospy.Rate(10)
         
@@ -153,6 +164,9 @@ def controlArm():
         Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
         
+        VWheel = Matrix([ [V[0]/10], [V[1]/10], [0]])
+        wheel_vel = (np.dot(H, VWheel).A1).tolist()
+        wheel_vel = np.array(wheel_vel)
 
         if(q_==-1):
             q=Q
@@ -164,6 +178,12 @@ def controlArm():
                 elif q_[i]<-pi/10:
                     q_[i]=-pi/10
                 i+=1
+
+            ind = wheel_vel>10
+            wheel_vel[ind] = 10
+            
+            ind = wheel_vel <-10
+            wheel_vel[ind]=-10
 
             q=Q+q_
         else:
@@ -177,6 +197,19 @@ def controlArm():
         pub_wrist2.publish(q[4]) 
         pub_wrist3.publish(q[5]) 
         
+        wv = Float64()
+        wv.data = wheel_vel[0]
+        fr_pub.publish(wv)
+
+        wv.data = wheel_vel[1]
+        fl_pub.publish(wv)
+
+        wv.data = wheel_vel[2]
+        rr_pub.publish(wv)
+
+        wv.data = wheel_vel[3]
+        rl_pub.publish(wv)
+
         loop_rate.sleep()
 
 if __name__=="__main__":
@@ -195,6 +228,11 @@ if __name__=="__main__":
     pub_wrist1 = rospy.Publisher('/wrist_1_joint_position_controller/command', Float64, queue_size=5) 
     pub_wrist2 = rospy.Publisher('/wrist_2_joint_position_controller/command', Float64, queue_size=5) 
     pub_wrist3 = rospy.Publisher('/wrist_3_joint_position_controller/command', Float64, queue_size=5) 
+
+    fr_pub = rospy.Publisher('/front_right_controller/command', Float64, queue_size=10)
+    fl_pub = rospy.Publisher('/front_left_controller/command', Float64, queue_size=10)
+    rr_pub = rospy.Publisher('/rear_right_controller/command', Float64, queue_size=10)
+    rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=10)
 
     i=0
     q = Matrix([ [rads(45.001)], [rads(-90 + -80/1.571)], [rads(0.001)], [rads(0.1)], [rads(0.1)], [rads(0.1)]])
