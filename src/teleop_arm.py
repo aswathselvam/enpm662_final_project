@@ -1,105 +1,3 @@
-#! /usr/bin/env python
-
-from numpy.core.records import array
-from numpy.lib.financial import rate
-from sympy.solvers.diophantine.diophantine import length
-import rospy
-from std_msgs.msg import Float64
-from sympy import *
-import math
-from control_msgs.msg import JointControllerState
-import time 
-import numpy as np
-
-from gazebo_msgs.srv import GetLinkState 
-
-Q1 = 1 
-Q2 = 1
-Q3 = 1
-Q4 = 1
-Q5 = 1
-Q6 = 1
-
-def rads(x):
-    return math.radians(x)
-
-def callback1(data):
-    global Q1
-    Q1=data.process_value
-    return
-    
-def callback2(data):
-    global Q2
-    Q2=data.process_value
-    return
-    
-def callback3(data):
-    global Q3
-    Q3=data.process_value
-    return
-    
-def callback4(data):
-    global Q4
-    Q4=data.process_value
-    return
-    
-def callback5(data):
-    global Q5
-    Q5=data.process_value
-    return
-    
-def callback6(data):
-    global Q6
-    Q6=data.process_value
-    return
-
-
-model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)  
-def getGoals():
-    global model_info, Goals
-    Goals = []
-
-    # Reach 3 object with the arm
-    Goal_names= ["coke_can::link", "beer::link", "wood_cube_10cm::link"]
-    for i in Goal_names:
-        obj = model_info(i,"world")
-        x = obj.link_state.pose.position.x
-        y = obj.link_state.pose.position.y
-        z = obj.link_state.pose.position.z + 0.1
-        Goals.append([x, y, z])
-    Goals = np.array(Goals)
-
-
-t1, t2, t3, t4, t5, t6 = symbols('t1 t2 t3 t4 t5 t6')
-
-
-l = 0.575 
-w = 0.275
-
-'''
-u = Wheel input  - angular vel, 4x1
-{S} world frame
-(B) Robot base frame
-Tsb = f(phi) -> phi robot's rotation wrt {S} 
-u = H(0) 
-'''
-H = np.matrix([[ 1, 1,  (w + l)],
-                              [ 1, -1, -(w + l)],
-                              [ 1, -1,  (w + l)],
-                              [ 1,  1, -(w + l)]])
-
-Hpi = Matrix([[-1/(4*(l + w)), 1/(4*(l + w)), 1/(4*(l + w)), -1/(4*(l + w))],
-[1/4, 1/4, 1/4, 1/4],
-[-1/4, 1/4, -1/4, 1/4],
-])
-'''
-Jbase = 
-Jarm = 
-'''
-
-'''
-Je = Matrix([Jbase Jarm])
-'''
 
 s = 1e-20
 
@@ -135,25 +33,6 @@ z6 = Matrix([[sin(t5)*(cos(t4)*(cos(t1)*sin(t2)*sin(t3) - cos(t1)*cos(t2)*cos(t3
 Je = Matrix([[J11, J12, J13, J14, J15, J16],
 [J21,J22,J23,J24,J25,J26],
 [J31,J32,J33,J34,J35,J36]])
-#[z1.T, z2.T, z3.T, z4.T, z5.T, z6.T]])
-
-'''
-Je = Matrix([[J11, J21, J31],
-            [J12, J22, J32],
-            [J13, J23, J33],
-            [J14, J24, J34],
-            [J15, J25, J35],
-            [J16, J26, J36]])
-print(shape(Je))
-'''
-
-
-'''
-inp = Matrix([u1, u2, u3, u4])
-Ve = Je*inp
-
-'''
-
 
 
 def J_inv(q):
@@ -165,128 +44,193 @@ def J_inv(q):
         return -1
     return Jp
 
+import rospy
 
-def controlArm():
-    global Q1, Q2, Q3, Q4, Q5, Q6, Hpi, s, Goals, model_info
+from std_msgs.msg import Float64
 
-    # Q1, Q2, Q3, Q4, Q5, Q6 stands for:
-    # shoulder, upperarm, forearm, wrist 1, wrsit 2, wrist 3
-
-    loop_rate = rospy.Rate(10)
-
-    Kp = 1
-    current_goal = 0
-    while not rospy.is_shutdown():
-        endeff = model_info("robot::wrist_3_link", "world")
-        endeffx = endeff.link_state.pose.position.x
-        endeffy = endeff.link_state.pose.position.y
-        endeffz = endeff.link_state.pose.position.z
-        
-        Xerr = Kp*(Goals[current_goal][0] - endeffx)
-        Yerr = Kp*(Goals[current_goal][1] - endeffy)
-        Zerr = Kp*(Goals[current_goal][2] - endeffz)
-        #print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.4:
-            #Go to next goal
-            current_goal+=1
-            print("Going to GOAL: ", current_goal+1)
-        if(current_goal>len(Goals)-1):
-            #End program
-            break
-
-        # Lock Q2 = rads(-90 + 35/1.571)
+import sys, select, termios, tty
+from geometry_msgs.msg import Twist
 
 
-        p=0.5
-        V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr] ])  
+msg = """
+Control Your Toy!
+---------------------------
+Moving around:
+   u    i    o
+   j    k    l
+   m    ,    .
+q/z : increase/decrease max speeds by 10%
+w/x : increase/decrease only linear speed by 10%
+e/c : increase/decrease only angular speed by 10%
+space key, k : force stop
+anything else : stop smoothly
+CTRL-C to quit
+"""
 
-        Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
-        q_=J_inv(Q)*V
-        
-        VWheel = Matrix([ [Xerr], [Yerr], [0]])
-        wheel_vel = (np.dot(H, VWheel).A1).tolist()
-        wheel_vel = np.array(wheel_vel)
+moveBindings = {
+        'i':(1,0),
+        'o':(1,-1),
+        'j':(0,1),
+        'l':(0,-1),
+        'u':(1,1),
+        ',':(-1,0),
+        '.':(-1,1),
+        'm':(-1,-1),
+           }
 
-        if(q_==-1):
-            q=Q
-        elif(len(Q)==len(q_)):
-            i=0
-            while i<len(q_):
-                if q_[i]>pi/10:
-                    q_[i]=pi/10
-                elif q_[i]<-pi/10:
-                    q_[i]=-pi/10
-                i+=1
+speedBindings={
+        'q':(1.1,1.1),
+        'z':(.9,.9),
+        'w':(1.1,1),
+        'x':(.9,1),
+        'e':(1,1.1),
+        'c':(1,.9),
+          }
 
-            ind = wheel_vel>10
-            wheel_vel[ind] = 10
-            
-            ind = wheel_vel <-10
-            wheel_vel[ind]=-10
+def getKey():
+    tty.setraw(sys.stdin.fileno())
+    rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+    if rlist:
+        key = sys.stdin.read(1)
+    else:
+        key = ''
 
-            q=Q+q_
-        else:
-            continue
+    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    return key
 
-        print(q_)
-        pub_shoulder.publish(q[0]) 
-        pub_upperarm.publish(rads(-90 + 35/1.571)) 
-        pub_elbow.publish(q[2]) 
-        pub_wrist1.publish(q[3])  
-        pub_wrist2.publish(q[4]) 
-        pub_wrist3.publish(q[5]) 
-        
-        wv = Float64()
-        wv.data = wheel_vel[0]
-        fr_pub.publish(wv)
+speed = 10
+speedy = 10
+turn = 10
 
-        wv.data = wheel_vel[1]
-        fl_pub.publish(wv)
-
-        wv.data = wheel_vel[2]
-        rr_pub.publish(wv)
-
-        wv.data = wheel_vel[3]
-        rl_pub.publish(wv)
-
-        loop_rate.sleep()
+def vels(speed,turn):
+    return "currently:\tspeed %s\tturn %s " % (speed,turn)
 
 if __name__=="__main__":
-    rospy.init_node("arm_ik")
-    getGoals()
+    settings = termios.tcgetattr(sys.stdin)
+    
+    rospy.init_node('car_teleop')
+    
+    velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
-    rospy.Subscriber("/shoulder_pan_joint_position_controller/state/", JointControllerState, callback1, queue_size=5)
-    rospy.Subscriber("/shoulder_lift_joint_position_controller/state", JointControllerState, callback2)
-    rospy.Subscriber("/elbow_joint_position_controller/state", JointControllerState, callback3)
-    rospy.Subscriber("/wrist_1_joint_position_controller/state", JointControllerState, callback4)    
-    rospy.Subscriber("/wrist_2_joint_position_controller/state", JointControllerState, callback5)
-    rospy.Subscriber("/wrist_3_joint_position_controller/state", JointControllerState, callback6)
+    x = 0
+    y = 0
+    th = 0
+    status = 0
+    count = 0
+    acc = 0.1
+    target_speed = 0
+    target_turn = 0
+    control_speed = 0
+    control_speedy = 0
+    control_turn = 0
+    rate = rospy.Rate(20) 
+    try:
+        print(msg)
+        print(vels(speed,turn))
+        vel_msg = Twist()
+        while not rospy.is_shutdown():
+            key = getKey()
+            vel_msg.linear.x = 0
+            vel_msg.linear.y = 0
+            vel_msg.linear.z = 0
+            vel_msg.angular.x = 0
+            vel_msg.angular.y = 0
+            vel_msg.angular.z = 0
+            if key in moveBindings.keys():
+                if(key == 'i' or key == ','):
+                    x = moveBindings[key][0]
+                elif(key == 'j' or key=='l'):
+                    y = moveBindings[key][1]
+                elif(key == 'u' or key=='o'):
+                    th = moveBindings[key][1]
+
+                count = 0
+            elif key in speedBindings.keys():
+                #speed = speed * speedBindings[key][0]
+                #speedy = speedy * speedBindings[key][0]
+                #turn = turn * speedBindings[key][1]
+                count = 0
+
+                print(vels(speed,turn))
+                if (status == 14):
+                    print(msg)
+                status = (status + 1) % 15
+            elif key == ' ' or key == 'k' :
+                x = 0
+                y = 0
+                th = 0
+                control_speed = 0
+                control_turn = 0
+            else:
+                count = count + 1
+                if count > 4:
+                    x = 0
+                    y = 0
+                    th = 0
+                if (key == '\x03'):
+                    break
+
+            target_speed = speed * x
+            target_speedy = speedy * y
+            target_turn = turn * th
+
+            if target_speed > control_speed:
+                control_speed = min( target_speed, control_speed + 10)
+            elif target_speed < control_speed:
+                control_speed = max( target_speed, control_speed - 10 )
+            else:
+                control_speed = target_speed
+
+            if target_speedy > control_speedy:
+                control_speedy = min( target_speedy, control_speedy + 10)
+            elif target_speedy < control_speedy:
+                control_speedy = max( target_speedy, control_speedy - 10 )
+            else:
+                control_speedy = target_speedy
+
+            if target_turn > control_turn:
+                control_turn = min( target_turn, control_turn + 10 )
+            elif target_turn < control_turn:
+                control_turn = max( target_turn, control_turn - 10 )
+            else:
+                control_turn = target_turn
+
+            vel_msg.linear.x = control_speed
+            vel_msg.linear.y = control_speedy
+            vel_msg.angular.z = control_turn
+
+            Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
+
+            q_=J_inv(Q)*V
+
+            if(q_==-1):
+                q=Q
+            elif(len(Q)==len(q_)):
+                i=0
+                while i<len(q_):
+                    if q_[i]>pi/10:
+                        q_[i]=pi/10
+                    elif q_[i]<-pi/10:
+                        q_[i]=-pi/10
+                    i+=1
+
+                ind = wheel_vel>10
+                wheel_vel[ind] = 10
+                
+                ind = wheel_vel <-10
+                wheel_vel[ind]=-10
+
+                q=Q+q_
+            else:
+                continue
+
+            print("speed: ",control_speed, "speed: ",control_speedy, "speed: ",control_turn)
+            velocity_publisher.publish(vel_msg)
+
+            rate.sleep()
 
 
-    pub_shoulder = rospy.Publisher('/shoulder_pan_joint_position_controller/command', Float64, queue_size=5) 
-    pub_upperarm = rospy.Publisher('/shoulder_lift_joint_position_controller/command', Float64, queue_size=5) 
-    pub_elbow = rospy.Publisher('/elbow_joint_position_controller/command', Float64, queue_size=5) 
-    pub_wrist1 = rospy.Publisher('/wrist_1_joint_position_controller/command', Float64, queue_size=5) 
-    pub_wrist2 = rospy.Publisher('/wrist_2_joint_position_controller/command', Float64, queue_size=5) 
-    pub_wrist3 = rospy.Publisher('/wrist_3_joint_position_controller/command', Float64, queue_size=5) 
+    except Exception as e:
+        print(e)
 
-    fr_pub = rospy.Publisher('/front_right_controller/command', Float64, queue_size=10)
-    fl_pub = rospy.Publisher('/front_left_controller/command', Float64, queue_size=10)
-    rr_pub = rospy.Publisher('/rear_right_controller/command', Float64, queue_size=10)
-    rl_pub = rospy.Publisher('/rear_left_controller/command', Float64, queue_size=10)
-
-    i=0
-    q = Matrix([ [rads(45.001)], [rads(-90 + -80/1.571)], [rads(0.001)], [rads(0.1)], [rads(0.1)], [rads(0.1)]])
-    prate = rospy.Rate(10)
-    while i<1e1:
-        pub_shoulder.publish(q[0]) 
-        pub_upperarm.publish(rads(-90 + 35/1.571)) 
-        pub_elbow.publish(q[2]) 
-        pub_wrist1.publish(q[3])  
-        pub_wrist2.publish(q[4]) 
-        pub_wrist3.publish(q[5]) 
-        i+=1
-        prate.sleep()
-
-    controlArm()
 
