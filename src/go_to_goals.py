@@ -118,9 +118,17 @@ J35 = (cos(t5)*(cos(t4)*(cos(t2)*sin(t3) + cos(t3)*sin(t2)) + sin(t4)*(cos(t2)*c
 J36 = s
 
 
+z1 = Matrix([[0, 0, 1]])
+z2 = Matrix([[-sin(t1), cos(t1), 0]])
+z3 = Matrix([[-sin(t1), cos(t1), 0]])
+z4 = Matrix([[-sin(t1), cos(t1), 0]])
+z5 = Matrix([[-sin(t1), cos(t1), 0]])
+z6 = Matrix([[sin(t5)*(cos(t4)*(cos(t1)*sin(t2)*sin(t3) - cos(t1)*cos(t2)*cos(t3)) + sin(t4)*(cos(t1)*cos(t2)*sin(t3) + cos(t1)*cos(t3)*sin(t2))) - cos(t5)*(cos(t4)*(cos(t1)*cos(t2)*sin(t3) + cos(t1)*cos(t3)*sin(t2)) - sin(t4)*(cos(t1)*sin(t2)*sin(t3) - cos(t1)*cos(t2)*cos(t3))), sin(t5)*(cos(t4)*(sin(t1)*sin(t2)*sin(t3) - cos(t2)*cos(t3)*sin(t1)) + sin(t4)*(cos(t2)*sin(t1)*sin(t3) + cos(t3)*sin(t1)*sin(t2))) - cos(t5)*(cos(t4)*(cos(t2)*sin(t1)*sin(t3) + cos(t3)*sin(t1)*sin(t2)) - sin(t4)*(sin(t1)*sin(t2)*sin(t3) - cos(t2)*cos(t3)*sin(t1))), sin(t5)*(cos(t4)*(cos(t2)*sin(t3) + cos(t3)*sin(t2)) + sin(t4)*(cos(t2)*cos(t3) - sin(t2)*sin(t3))) - cos(t5)*(cos(t4)*(cos(t2)*cos(t3) - sin(t2)*sin(t3)) - sin(t4)*(cos(t2)*sin(t3) + cos(t3)*sin(t2)))] ])
+
 Je = Matrix([[J11, J12, J13, J14, J15, J16],
 [J21,J22,J23,J24,J25,J26],
-[J31,J32,J33,J34,J35,J36]])
+[J31,J32,J33,J34,J35,J36],
+[z1.T, z2.T, z3.T, z4.T, z5.T, z6.T]])
 
 '''
 Je = Matrix([[J11, J21, J31],
@@ -141,21 +149,17 @@ Ve = Je*inp
 
 
 
-def inverse(J,q):
-    Js = J.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
-    try:
-        Jp = ((Js.T*Js)).inv()*Js.T
-    except:
-        return -1
-    return Jp
-
 def J_inv(q):
     global Je
     Js = Je.subs({t1: q[0], t2: q[1], t3: q[2], t4: q[3], t5: q[4], t6: q[5]}).evalf()
     try:
-        Jp = ((Js.T*Js)).inv()*Js.T
+        Jsts = Js.T*Js
+        pprint(Jsts)
+        Jp = Jsts.inv()*Js.T
+
     except:
         return -1
+    
     return Jp
 
 
@@ -224,7 +228,7 @@ def controlArm():
         else:
             continue
 
-        #print(q_)
+        print(q_)
         pub_shoulder.publish(q[0]) 
         pub_upperarm.publish(rads(-90 + 35/1.571)) 
         pub_elbow.publish(q[2]) 
