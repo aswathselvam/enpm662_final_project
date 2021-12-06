@@ -19,7 +19,7 @@ Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 
 - Gazebo simulation
 
-  ![mecanum_robot]()
+  ![mecanum_robot](assets/3goals.gif)
 
   ```bash
   # Gazebo GUI launch
@@ -44,11 +44,13 @@ Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 
 ## Data visualization:
 Plot joint angles with RQT:
+![Rviz](assets/PID.gif)
 ```
 roslaunch enpm662_final_project rqt_vis.launch  
 ```
 
 Visualize in Rviz:
+![Rviz](assets/rviz.gif)
 ```
 # Rviz visualization:
 roslaunch enpm662_final_project rviz.launch
