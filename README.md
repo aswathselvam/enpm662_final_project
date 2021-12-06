@@ -44,12 +44,14 @@ Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 
 ## Data visualization:
 Plot joint angles with RQT:
+
 ![Rviz](assets/PID.gif)
 ```
 roslaunch enpm662_final_project rqt_vis.launch  
 ```
 
 Visualize in Rviz:
+
 ![Rviz](assets/rviz.gif)
 ```
 # Rviz visualization:
