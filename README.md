@@ -22,6 +22,7 @@ gazebo model description.
 1. Gazebo simulation:
 
     ![Vegetation](assets/vegetation.gif)
+    *Full Video Youtube [link](https://youtu.be/qoDo5TzVyWU)*
 
 
 - Run Vegetation pest survey Environment:
@@ -39,19 +40,20 @@ gazebo model description.
 2. Run sample world file:
 
 
-  ![Object world](assets/3goals.gif)
+    ![Object world](assets/3goals.gif)
   
   
-    Launch the sample world file:
-    ```bash
-    # Objects world Gazebo launch
-    roslaunch enpm662_final_project gazebo_test_robot.launch argworld:=objects
-    ```
-    - Touch objects in environment using these commands:
-    ```bash
-    # Run Go to Goals node
-    rosrun enpm662_final_project go_to_goals.py
-    ```
+ - Launch the sample world file:
+   ```bash
+   # Objects world Gazebo launch
+   roslaunch enpm662_final_project gazebo_test_robot.launch argworld:=objects
+   ```
+
+   - Touch objects in environment using these commands:
+   ```bash
+   # Run Go to Goals node
+   rosrun enpm662_final_project go_to_goals.py
+   ```
 
 3. For Teleop run these 2 nodes:
     ```bash
