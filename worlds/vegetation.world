@@ -467,7 +467,7 @@
       <real_time>240 658284365</real_time>
       <wall_time>1638832374 696404868</wall_time>
       <iterations>218971</iterations>
-      <model name='Bush 3'>
+      <model name='Bush3'>
         <pose>0 4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -477,7 +477,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_0'>
+      <model name='Bush3_0'>
         <pose>4 4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -487,7 +487,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_1'>
+      <model name='Bush3_1'>
         <pose>8 4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -497,7 +497,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_10'>
+      <model name='Bush3_10'>
         <pose>5 -5 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -507,7 +507,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_11'>
+      <model name='Bush3_11'>
         <pose>9 -5 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -517,7 +517,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_12'>
+      <model name='Bush3_12'>
         <pose>13 -5 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -527,7 +527,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_2'>
+      <model name='Bush3_2'>
         <pose>12 4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -537,7 +537,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_3'>
+      <model name='Bush3_3'>
         <pose>-4.56618 4.53582 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -547,7 +547,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_4'>
+      <model name='Bush3_4'>
         <pose>-8 4.5402 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -557,7 +557,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_5'>
+      <model name='Bush3_5'>
         <pose>-12 4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -567,7 +567,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_6'>
+      <model name='Bush3_6'>
         <pose>-11 -3.48539 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -577,7 +577,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_7'>
+      <model name='Bush3_7'>
         <pose>-7 -4 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -587,7 +587,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_8'>
+      <model name='Bush3_8'>
         <pose>-3 -4.44596 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -597,7 +597,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='Bush 3_9'>
+      <model name='Bush3_9'>
         <pose>1 -5 0 1.57079 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -2294,7 +2294,7 @@
       <pose>9.86465 4.85433 0 0 -0 0</pose>
     </model>
     <wind/>
-    <model name='Bush 3'>
+    <model name='Bush3'>
       <static>1</static>
       <pose>0 4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2333,7 +2333,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_0'>
+    <model name='Bush3_0'>
       <static>1</static>
       <pose>4 4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2372,7 +2372,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_1'>
+    <model name='Bush3_1'>
       <static>1</static>
       <pose>8 4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2411,7 +2411,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_2'>
+    <model name='Bush3_2'>
       <static>1</static>
       <pose>12 4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2450,7 +2450,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_3'>
+    <model name='Bush3_3'>
       <static>1</static>
       <pose>-4.56618 4.53582 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2489,7 +2489,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_4'>
+    <model name='Bush3_4'>
       <static>1</static>
       <pose>-8 4.5402 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2528,7 +2528,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_5'>
+    <model name='Bush3_5'>
       <static>1</static>
       <pose>-12 4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2567,7 +2567,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_6'>
+    <model name='Bush3_6'>
       <static>1</static>
       <pose>-11 -3.48539 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2606,7 +2606,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_7'>
+    <model name='Bush3_7'>
       <static>1</static>
       <pose>-7 -4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2645,7 +2645,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_8'>
+    <model name='Bush3_8'>
       <static>1</static>
       <pose>-3 -4.44596 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2684,7 +2684,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_9'>
+    <model name='Bush3_9'>
       <static>1</static>
       <pose>1 -4 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2723,7 +2723,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_10'>
+    <model name='Bush3_10'>
       <static>1</static>
       <pose>5 -5 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2762,7 +2762,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_11'>
+    <model name='Bush3_11'>
       <static>1</static>
       <pose>9 -5 0 1.57079 -0 0</pose>
       <link name='link'>
@@ -2801,7 +2801,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='Bush 3_12'>
+    <model name='Bush3_12'>
       <static>1</static>
       <pose>13 -5 0 1.57079 -0 0</pose>
       <link name='link'>

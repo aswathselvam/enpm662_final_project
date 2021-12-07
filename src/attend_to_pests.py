@@ -60,12 +60,13 @@ def getGoals():
     Goals = []
 
     # Reach 3 object with the arm
-    Goal_names= ["Bush 3", "Bush 3_0", "Bush 3_1", "Bush 3_2"]
+    Goal_names= ["Bush3::link", "Bush3_10::link", "Bush3_0::link", "Bush3_1::link", "Bush3_2::link"]
     for i in Goal_names:
         obj = model_info(i,"world")
-        x = obj.link_state.pose.position.x - 1.5
-        y = obj.link_state.pose.position.y - 1.5
-        z = obj.link_state.pose.position.z + 0.4
+        x = obj.link_state.pose.position.x - 0
+        y = obj.link_state.pose.position.y - 0
+        z = obj.link_state.pose.position.z + 0.6
+        print("BUSH LOC: ",x,y,z)
         Goals.append([x, y, z])
     Goals = np.array(Goals)
 
@@ -189,18 +190,18 @@ def controlArm():
     loop_rate = rospy.Rate(10)
 
     current_goal = 0
-    Kp = 5
-    p=0.001
+    Kp = 3
+    p=0.01
     while not rospy.is_shutdown():
         endeffx, endeffy, endeffz = get_end_effector_pos()
 
         Xerr = Kp*(Goals[current_goal][0] - endeffx)
         Yerr = Kp*(Goals[current_goal][1] - endeffy)
         Zerr = Kp*(Goals[current_goal][2] - endeffz)
-        #print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        print(Goals[current_goal][0],Goals[current_goal][0],Goals[current_goal][0])
-        print(endeffx,endeffy,endeffz)
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.4:
+        print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
+        #print(Goals[current_goal][0],Goals[current_goal][0],Goals[current_goal][0])
+        #print(endeffx,endeffy,endeffz)
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<3:
             #Go to next goal
             current_goal+=1
             print("Going to GOAL: ", current_goal+1)
