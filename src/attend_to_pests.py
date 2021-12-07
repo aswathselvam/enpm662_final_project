@@ -60,12 +60,14 @@ def getGoals():
     Goals = []
 
     # Reach 3 object with the arm
-    Goal_names= ["coke_can::link", "beer::link", "wood_cube_10cm::link"]
+    Goal_names= ["Bush3::link", "Bush3_10::link", "Bush3_0::link", "Bush3_1::link", "Bush3_2::link"]
     for i in Goal_names:
         obj = model_info(i,"world")
         x = obj.link_state.pose.position.x
         y = obj.link_state.pose.position.y
-        z = obj.link_state.pose.position.z + 0.1
+        y= y - 1.5*abs(y)/y
+        z = obj.link_state.pose.position.z + 0.8
+        print("BUSH LOC: ",x,y,z)
         Goals.append([x, y, z])
     Goals = np.array(Goals)
 
@@ -189,23 +191,18 @@ def controlArm():
     loop_rate = rospy.Rate(10)
 
     current_goal = 0
-    print("Current end effector position(x, y, z): ",get_end_effector_pos())
-    if (input("Do you want to enter custom Input? (y/n): ")=="y"):
-        xg = float(input("Input custom goal location X: "))
-        yg = float(input("Input custom goal location Y: "))
-        zg = float(input("Input custom goal location Z: "))
-        current_goal = len(Goals)
-        Goals=np.append(Goals,[[xg,yg,zg]],axis=0)
-
-    Kp = 2
+    Kp = 3
+    p=1
     while not rospy.is_shutdown():
         endeffx, endeffy, endeffz = get_end_effector_pos()
 
-        Xerr = (Goals[current_goal][0] - endeffx)
-        Yerr = (Goals[current_goal][1] - endeffy)
-        Zerr = (Goals[current_goal][2] - endeffz)
+        Xerr = Kp*(Goals[current_goal][0] - endeffx)
+        Yerr = Kp*(Goals[current_goal][1] - endeffy)
+        Zerr = Kp*(Goals[current_goal][2] - endeffz)
         print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.6:
+        #print(Goals[current_goal][0],Goals[current_goal][0],Goals[current_goal][0])
+        #print(endeffx,endeffy,endeffz)
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<3.5:
             #Go to next goal
             current_goal+=1
             print("Going to GOAL: ", current_goal+1)
@@ -216,13 +213,12 @@ def controlArm():
         # Lock Q2 = rads(-90 + 35/1.571)
 
 
-        p=0.01
-        V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
+        V = Matrix([ [-p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
 
         Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
         
-        VWheel = Matrix([ [Kp*Xerr], [Kp*Yerr], [0]])
+        VWheel = Matrix([ [Xerr], [Yerr], [0]])
         wheel_vel = (np.dot(H, VWheel).A1).tolist()
         wheel_vel = np.array(wheel_vel)
 

@@ -163,6 +163,7 @@ include_directories(
    test/test_publisher.py
    src/publish_baselinkTF.py
    src/go_to_goals.py
+   src/attend_to_pests.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
