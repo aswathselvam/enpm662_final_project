@@ -60,12 +60,12 @@ def getGoals():
     Goals = []
 
     # Reach 3 object with the arm
-    Goal_names= ["coke_can::link", "beer::link", "wood_cube_10cm::link"]
+    Goal_names= ["Bush 3", "Bush 3_0", "Bush 3_1", "Bush 3_2"]
     for i in Goal_names:
         obj = model_info(i,"world")
-        x = obj.link_state.pose.position.x
-        y = obj.link_state.pose.position.y
-        z = obj.link_state.pose.position.z + 0.1
+        x = obj.link_state.pose.position.x - 1.5
+        y = obj.link_state.pose.position.y - 1.5
+        z = obj.link_state.pose.position.z + 0.4
         Goals.append([x, y, z])
     Goals = np.array(Goals)
 
@@ -189,15 +189,8 @@ def controlArm():
     loop_rate = rospy.Rate(10)
 
     current_goal = 0
-    print("Current end effector position(x, y, z): ",get_end_effector_pos())
-    if (input("Do you want to enter custom Input? (y/n): ")=="y"):
-        xg = float(input("Input custom goal location X: "))
-        yg = float(input("Input custom goal location Y: "))
-        zg = float(input("Input custom goal location Z: "))
-        current_goal = len(Goals)
-        Goals=np.append(Goals,[[xg,yg,zg]],axis=0)
-
     Kp = 5
+    p=0.001
     while not rospy.is_shutdown():
         endeffx, endeffy, endeffz = get_end_effector_pos()
 
@@ -205,6 +198,8 @@ def controlArm():
         Yerr = Kp*(Goals[current_goal][1] - endeffy)
         Zerr = Kp*(Goals[current_goal][2] - endeffz)
         #print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
+        print(Goals[current_goal][0],Goals[current_goal][0],Goals[current_goal][0])
+        print(endeffx,endeffy,endeffz)
         if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.4:
             #Go to next goal
             current_goal+=1
@@ -216,8 +211,7 @@ def controlArm():
         # Lock Q2 = rads(-90 + 35/1.571)
 
 
-        p=0.5
-        V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
+        V = Matrix([ [-p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
 
         Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
@@ -247,7 +241,7 @@ def controlArm():
         else:
             continue
 
-        print(q_)
+        #print(q_)
         pub_shoulder.publish(q[0]) 
         pub_upperarm.publish(rads(-90 + 35/1.571)) 
         pub_elbow.publish(q[2]) 
