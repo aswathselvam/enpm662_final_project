@@ -15,6 +15,9 @@
     ```
     Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
 
+## Unit Test
+Video shows the arm's End effector is moved in [X,Y](https://youtu.be/7pDdwMx3wy0) and [Z](https://youtu.be/ckWtDDp8nYo) coordinates using Inverse Jacobian method. 
+
 ## Test
 
 1. Gazebo simulation:
