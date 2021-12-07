@@ -3,7 +3,7 @@
 <launch>
 
   <env name="GAZEBO_MODEL_PATH"
-       value="$(find enpm662_final_project)/../:$(optenv GAZEBO_MODEL_PATH)" />
+       value="$(find enpm662_final_project):$(optenv GAZEBO_MODEL_PATH)" />
 
   <arg name="argworld" default="vegetation" doc="Default world to launch(accepts vegetation or omni)"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
