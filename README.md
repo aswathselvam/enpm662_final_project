@@ -21,7 +21,7 @@ gazebo model description.
 
 1. Gazebo simulation:
 
-    ![mecanum_robot](assets/vegetation.gif)
+    ![Vegetation](assets/vegetation.gif)
 
 
 - Run Vegetation pest survey Environment:
@@ -37,7 +37,7 @@ gazebo model description.
 
 
 2. Run sample world file:
-  ![mecanum_robot](assets/3goals.gif)
+  ![Object world](assets/3goals.gif)
     Launch the sample world file:
     ```bash
     # Objects world Gazebo launch
