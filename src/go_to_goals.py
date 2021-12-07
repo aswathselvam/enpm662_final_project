@@ -197,15 +197,15 @@ def controlArm():
         current_goal = len(Goals)
         Goals=np.append(Goals,[[xg,yg,zg]],axis=0)
 
-    Kp = 5
+    Kp = 2
     while not rospy.is_shutdown():
         endeffx, endeffy, endeffz = get_end_effector_pos()
 
-        Xerr = Kp*(Goals[current_goal][0] - endeffx)
-        Yerr = Kp*(Goals[current_goal][1] - endeffy)
-        Zerr = Kp*(Goals[current_goal][2] - endeffz)
-        #print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.4:
+        Xerr = (Goals[current_goal][0] - endeffx)
+        Yerr = (Goals[current_goal][1] - endeffy)
+        Zerr = (Goals[current_goal][2] - endeffz)
+        print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.6:
             #Go to next goal
             current_goal+=1
             print("Going to GOAL: ", current_goal+1)
@@ -216,13 +216,13 @@ def controlArm():
         # Lock Q2 = rads(-90 + 35/1.571)
 
 
-        p=0.5
+        p=0.01
         V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
 
         Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
         
-        VWheel = Matrix([ [Xerr], [Yerr], [0]])
+        VWheel = Matrix([ [Kp*Xerr], [Kp*Yerr], [0]])
         wheel_vel = (np.dot(H, VWheel).A1).tolist()
         wheel_vel = np.array(wheel_vel)
 
@@ -247,7 +247,7 @@ def controlArm():
         else:
             continue
 
-        print(q_)
+        #print(q_)
         pub_shoulder.publish(q[0]) 
         pub_upperarm.publish(rads(-90 + 35/1.571)) 
         pub_elbow.publish(q[2]) 

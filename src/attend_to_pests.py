@@ -63,9 +63,10 @@ def getGoals():
     Goal_names= ["Bush3::link", "Bush3_10::link", "Bush3_0::link", "Bush3_1::link", "Bush3_2::link"]
     for i in Goal_names:
         obj = model_info(i,"world")
-        x = obj.link_state.pose.position.x - 0
-        y = obj.link_state.pose.position.y - 0
-        z = obj.link_state.pose.position.z + 0.6
+        x = obj.link_state.pose.position.x
+        y = obj.link_state.pose.position.y
+        y= y - 1.5*abs(y)/y
+        z = obj.link_state.pose.position.z + 0.8
         print("BUSH LOC: ",x,y,z)
         Goals.append([x, y, z])
     Goals = np.array(Goals)
@@ -191,7 +192,7 @@ def controlArm():
 
     current_goal = 0
     Kp = 3
-    p=0.01
+    p=1
     while not rospy.is_shutdown():
         endeffx, endeffy, endeffz = get_end_effector_pos()
 
@@ -201,7 +202,7 @@ def controlArm():
         print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
         #print(Goals[current_goal][0],Goals[current_goal][0],Goals[current_goal][0])
         #print(endeffx,endeffy,endeffz)
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<3:
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<3.5:
             #Go to next goal
             current_goal+=1
             print("Going to GOAL: ", current_goal+1)
