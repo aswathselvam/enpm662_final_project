@@ -37,7 +37,11 @@ gazebo model description.
 
 
 2. Run sample world file:
+
+
   ![Object world](assets/3goals.gif)
+  
+  
     Launch the sample world file:
     ```bash
     # Objects world Gazebo launch
