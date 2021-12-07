@@ -7,7 +7,12 @@ gazebo model description.
 1. Link to report, discussions are [here](https://drive.google.com/drive/folders/1Rp32GsWSPNQBrzzu0iJeZsF_Ti1MLDRo?usp=sharing)
 2. Jacobian calculation was done in MATLAB file which can be found [here](assets/).
 ## Setup
-
+ - Clone this repository into your catkin_ws:
+    ```
+    git clone https://github.com/aswathselvam/enpm662_final_project.git
+    catkin_make
+    source devel/setup.bash
+    ```
 
  - If running ROS Noetic, you might have to run this command in the terminals you open:
     ```
@@ -49,7 +54,15 @@ gazebo model description.
     rosrun enpm662_final_project go_to_goals.py
     ```
 
-3. For Teleop run these 2 nodes:
+3. Run Teleop for UR5 Arm using Inverse Jacobian using:
+    ```bash
+    # Mecanum control node listener node
+    rosrun enpm662_final_project teleop_arm.py
+    ```
+
+
+
+4. For Teleop for chassis run these 2 nodes:
     ```bash
     # Mecanum control node listener node
     rosrun enpm662_final_project test_mecanum_robot.py

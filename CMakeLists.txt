@@ -164,6 +164,7 @@ include_directories(
    src/publish_baselinkTF.py
    src/go_to_goals.py
    src/attend_to_pests.py
+   src/teleop_arm.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
