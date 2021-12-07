@@ -2303,7 +2303,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2324,7 +2324,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2342,7 +2342,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2363,7 +2363,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2381,7 +2381,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2402,7 +2402,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2420,7 +2420,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2441,7 +2441,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2459,7 +2459,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2480,7 +2480,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2498,7 +2498,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2519,7 +2519,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2537,7 +2537,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2558,7 +2558,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2576,7 +2576,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2597,7 +2597,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2615,7 +2615,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2636,7 +2636,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2654,7 +2654,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2675,7 +2675,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2693,7 +2693,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2714,7 +2714,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2732,7 +2732,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2753,7 +2753,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2771,7 +2771,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2792,7 +2792,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -2810,7 +2810,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2831,7 +2831,7 @@
           <geometry>
             <mesh>
               <scale>5 5 5</scale>
-              <uri>model://enpm662_final_project/mesh/bush_3.obj</uri>
+              <uri>model://models/bush_3.obj</uri>
             </mesh>
           </geometry>
         </visual>

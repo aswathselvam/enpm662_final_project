@@ -3,7 +3,7 @@
 <launch>
 
   <env name="GAZEBO_MODEL_PATH"
-       value="$(find enpm662_final_project)/models:$(optenv GAZEBO_MODEL_PATH)" />
+       value="$(find enpm662_final_project)/../:$(optenv GAZEBO_MODEL_PATH)" />
 
   <arg name="argworld" default="vegetation" doc="Default world to launch(accepts vegetation or omni)"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -44,9 +44,9 @@
             -param robot_description" 
       respawn="false" 
       output="screen" />
-
+<!--
   <group if="$(eval arg('argworld') == 'vegetation')">
     <node pkg="enpm662_final_project" type="attend_to_pests.py" name="attend_pests_node" />
   </group>
-    
+-->
 </launch>

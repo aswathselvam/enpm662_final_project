@@ -7,10 +7,7 @@ gazebo model description.
 1. Link to report, discussions are [here](https://drive.google.com/drive/folders/1Rp32GsWSPNQBrzzu0iJeZsF_Ti1MLDRo?usp=sharing)
 2. Jacobian calculation was done in MATLAB file which can be found [here](assets/).
 ## Setup
- - **(Must)** Add workspace directory to GAZEBO path variable:
-    ```bash
-    export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:<path-to-catkin_ws>/src
-    ```
+
 
  - If running ROS Noetic, you might have to run this command in the terminals you open:
     ```
