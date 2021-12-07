@@ -19,38 +19,46 @@ gazebo model description.
 
 ## Test
 
-- Gazebo simulation
+1. Gazebo simulation:
 
-  ![mecanum_robot](assets/3goals.gif)
+    ![mecanum_robot](assets/vegetation.gif)
 
 
-- Run Vegetation pest survey node:
+- Run Vegetation pest survey Environment:
   ``` bash
   # Vegetation word Gazebo launch
   roslaunch enpm662_final_project gazebo_test_robot.launch
   ```
-
-- Run sample world file:
+  - Attend to pests on bushes in the field using the command:
   ```bash
-  # Objects world Gazebo launch
-  roslaunch enpm662_final_project gazebo_test_robot.launch argworld:=objects
+  # Run Attend to Pests node
+  rosrun enpm662_final_project attend_to_pests.py
   ```
-  - Touch objects in environment using these commands:
+
+
+2. Run sample world file:
+  ![mecanum_robot](assets/3goals.gif)
+    Launch the sample world file:
+    ```bash
+    # Objects world Gazebo launch
+    roslaunch enpm662_final_project gazebo_test_robot.launch argworld:=objects
+    ```
+    - Touch objects in environment using these commands:
     ```bash
     # Run Go to Goals node
     rosrun enpm662_final_project go_to_goals.py
     ```
 
-- For Teleop run these 2 nodes:
-  ```bash
-  # Mecanum control node listener node
-  rosrun enpm662_final_project test_mecanum_robot.py
-  ```
+3. For Teleop run these 2 nodes:
+    ```bash
+    # Mecanum control node listener node
+    rosrun enpm662_final_project test_mecanum_robot.py
+    ```
 
-  ```bash
-  # Teleop control node
-  rosrun enpm662_final_project test_publisher.py
-  ```
+    ```bash
+    # Teleop control node
+    rosrun enpm662_final_project test_publisher.py
+    ```
 
 ## Data visualization:
 Plot joint angles with RQT:
