@@ -129,16 +129,6 @@ anything else : stop smoothly
 CTRL-C to quit
 """
 
-moveBindings = {
-        'i':(1,0),
-        'o':(1,-1),
-        'j':(0,1),
-        'l':(0,-1),
-        'u':(1,1),
-        ',':(-1,0),
-        '.':(-1,1),
-        'm':(-1,-1),
-           }
 
 speedBindings={
         'q':(1.1,1.1),
@@ -224,23 +214,24 @@ if __name__=="__main__":
 
             V = Matrix([ [0], [0.0], [0.0], [0], [0], [0] ]) 
 
-            if key in moveBindings.keys():
+            if key in ['i',',','j','l','u','o']:
                 p=1
                 if(key == 'i'):
                     V = Matrix([ [p], [0.0], [0.0], [0], [0], [0] ]) 
                 elif(key == ','):
                     V = Matrix([ [-p], [0.0], [0.1], [0], [0], [0] ]) 
                 elif(key == 'j'):
-                    V = Matrix([ [0], [-5000*p], [0.0], [0], [0], [0] ])
+                    V = Matrix([ [0], [-p], [0.0], [0], [0], [0] ])
                 elif(key == 'l'):
-                    V = Matrix([ [0], [50000*p], [0.0], [0], [0], [0] ])
+                    V = Matrix([ [0], [p], [0.0], [0], [0], [0] ])
                 elif(key == 'u'):
                     V = Matrix([ [0], [0], [p], [0], [0], [0] ])  
-                elif(key == 'd'):
+                elif(key == 'o'):
                     V = Matrix([ [0], [0], [-p], [0], [0], [0] ])
                 
                 Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
 
+                print(V)
                 q_=J_inv(Q)*V
 
                 if(q_==-1):
@@ -257,6 +248,7 @@ if __name__=="__main__":
                 else:
                     continue
 
+                print(q)
                 pub_shoulder.publish(q[0]) 
                 pub_upperarm.publish(rads(-90 + 35/1.571)) 
                 pub_elbow.publish(q[2]) 
