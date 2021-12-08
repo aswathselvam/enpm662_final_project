@@ -236,7 +236,10 @@ def controlArm():
         print("side: ", abs(side)/side)
         
         V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
-        V = Matrix([ [p*abs(side)/side], [0], [p*Zerr], [0], [0], [0] ])  
+
+
+        #TODO: Redefine the error of the arm's position to reach an object differently
+        #V = Matrix([ [p*abs(side)/side], [0], [p*Zerr], [0], [0], [0] ])  
 
         Q = Matrix([[Q1], [-Q2], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
