@@ -215,7 +215,7 @@ if __name__=="__main__":
             V = Matrix([ [0], [0.0], [0.0], [0], [0], [0] ]) 
 
             if key in ['i',',','j','l','u','o']:
-                p=1
+                p=0.5
                 if(key == 'i'):
                     V = Matrix([ [p], [0.0], [0.0], [0], [0], [0] ]) 
                 elif(key == ','):
@@ -229,7 +229,7 @@ if __name__=="__main__":
                 elif(key == 'o'):
                     V = Matrix([ [0], [0], [-p], [0], [0], [0] ])
                 
-                Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
+                Q = Matrix([[Q1], [-Q2], [Q3], [Q4], [Q5], [Q6]])
 
                 print(V)
                 q_=J_inv(Q)*V
@@ -250,7 +250,7 @@ if __name__=="__main__":
 
                 print(q)
                 pub_shoulder.publish(q[0]) 
-                pub_upperarm.publish(rads(-90 + 35/1.571)) 
+                pub_upperarm.publish(rads(-90 + (q[1]*180/pi)/(pi/2))) 
                 pub_elbow.publish(q[2]) 
                 pub_wrist1.publish(q[3])  
                 pub_wrist2.publish(q[4]) 

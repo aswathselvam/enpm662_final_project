@@ -54,6 +54,8 @@ def callback6(data):
     return
 
 
+
+
 model_info= rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)  
 def getGoals():
     global model_info, Goals
@@ -68,6 +70,15 @@ def getGoals():
         z = obj.link_state.pose.position.z + 0.1
         Goals.append([x, y, z])
     Goals = np.array(Goals)
+
+def getBaseLinkPos():
+    global model_info
+    # Reach 3 object with the arm
+    obj = model_info("robot::base_link","world")
+    x = obj.link_state.pose.position.x
+    y = obj.link_state.pose.position.y
+    return x,y
+
 
 
 t1, t2, t3, t4, t5, t6 = symbols('t1 t2 t3 t4 t5 t6')
@@ -205,7 +216,7 @@ def controlArm():
         Yerr = (Goals[current_goal][1] - endeffy)
         Zerr = (Goals[current_goal][2] - endeffz)
         print(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))
-        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.6:
+        if(sqrt(Xerr**2 + Yerr**2 + Zerr**2 ))<0.2:
             #Go to next goal
             current_goal+=1
             print("Going to GOAL: ", current_goal+1)
@@ -214,12 +225,20 @@ def controlArm():
             break
 
         # Lock Q2 = rads(-90 + 35/1.571)
+        # offset_rads = rads(-90 + 0/(pi/2) )
+        # Q2' = rads(-90 + degrees(Q2)/(pi/2) )
+        # dq2 = rads(-90 + degrees(dq[2])/(pi/2) )
 
 
-        p=0.01
+        p=2.5
+        x1, y1 = getBaseLinkPos()
+        side = (endeffy-y1)*(Goals[current_goal][1]-y1) - (endeffx-x1)*(Goals[current_goal][0]-x1)
+        print("side: ", abs(side)/side)
+        
         V = Matrix([ [p*Xerr], [p*Yerr], [p*Zerr], [0], [0], [0] ])  
+        V = Matrix([ [p*abs(side)/side], [0], [p*Zerr], [0], [0], [0] ])  
 
-        Q = Matrix([[Q1], [rads(-35)], [Q3], [Q4], [Q5], [Q6]])
+        Q = Matrix([[Q1], [-Q2], [Q3], [Q4], [Q5], [Q6]])
         q_=J_inv(Q)*V
         
         VWheel = Matrix([ [Kp*Xerr], [Kp*Yerr], [0]])
@@ -249,7 +268,7 @@ def controlArm():
 
         #print(q_)
         pub_shoulder.publish(q[0]) 
-        pub_upperarm.publish(rads(-90 + 35/1.571)) 
+        pub_upperarm.publish(rads(-90 + (q[1]*180/pi)/(pi/2)) ) 
         pub_elbow.publish(q[2]) 
         pub_wrist1.publish(q[3])  
         pub_wrist2.publish(q[4]) 
