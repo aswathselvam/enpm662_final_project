@@ -18,7 +18,14 @@
     PATH=~/bin:$PATH
     ln -s /usr/bin/python3 ~/bin/python
     ```
-    Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`
+    Subsequently, you can add `PATH=~/bin:$PATH` to `~/.bashrc`. 
+
+ - The python [reqirements.txt](./requirements.txt) file can be used to install the required python library dependencies. \
+ Install the libraries by using the following command:
+    ```
+    pip install -r requirements.txt
+    ```
+
 
 ## Unit Test
 Video shows the arm's End effector is moved in [X,Y](https://youtu.be/7pDdwMx3wy0) and [Z](https://youtu.be/ckWtDDp8nYo) coordinates using Inverse Jacobian method. 
